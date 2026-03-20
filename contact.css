@@ -1,0 +1,57 @@
+        /* --- GLOBAL HEADER (Identical to Home/Menu) --- */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; 
+            background-color: #5d544b; padding: 10px 40px; display: flex; 
+            align-items: center; justify-content: space-between; box-sizing: border-box;
+        }
+        header h1 { color: #f3e9dc; margin: 0; font-size: 1.7rem; font-weight: bold; flex: 1; }
+        nav { flex: 1; display: flex; justify-content: flex-end; gap: 25px; }
+        nav a { color: #f3e9dc; text-decoration: none; font-weight: bold; }
+
+        /* --- TICKER --- */
+        #ticker-container { margin-top: 65px; background: #efeae4; height: 40px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #dcd5cc; overflow: hidden; position: relative; }
+        .ticker-item { position: absolute; opacity: 0; font-weight: bold; color: #5d544b; transition: opacity 1s ease-in-out; text-align: center; width: 100%; }
+        .ticker-item.active { opacity: 1; }
+
+        /* --- CONTACT FORM LAYOUT --- */
+        .contact-section {
+            display: flex; flex-direction: column; align-items: center; 
+            padding: 60px 5%; min-height: 70vh;
+        }
+
+        .contact-container {
+            background: white; padding: 40px; border-radius: 25px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 600px;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 { color: #5d544b; margin-top: 0; }
+        p { color: #8b7e74; line-height: 1.6; }
+
+        .form-group { margin-bottom: 20px; text-align: left; width: 100%; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #5d544b; }
+        
+        input, textarea {
+            width: 100%; padding: 12px 15px; border-radius: 12px; 
+            border: 2px solid #efeae4; outline: none; transition: 0.3s;
+            box-sizing: border-box; font-family: inherit;
+        }
+
+        input:focus, textarea:focus { border-color: #d4a373; }
+
+        button {
+            background: #5d544b; color: #f3e9dc; border: none; 
+            padding: 15px 35px; border-radius: 30px; font-weight: bold; 
+            cursor: pointer; transition: 0.3s; font-size: 1rem;
+        }
+
+        button:hover { background: #d4a373; transform: scale(1.05); }
+
+        .info-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; margin-top: 30px;
+        }
+
+        .info-box { background: #efeae4; padding: 20px; border-radius: 15px; text-align: center; }
+        .info-box b { color: #5d544b; display: block; margin-bottom: 5px; }

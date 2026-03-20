@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubriks Cafe + Bakery | Menu</title>
+		<link rel="stylesheet" href="hello.css">
+</head>
+<body style="margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #fdfaf7;">
+
+    <header>
+        <h1>Rubriks Cafe + Bakery</h1>
+        <div class="search-container">
+            <input type="text" id="menuSearch" placeholder="Search menu...">
+            <div id="searchDropdown"></div>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="hello.html">Menu</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <div id="ticker-container">
+        <div class="ticker-item active">OPENING HOURS: Mon-Fri 6am - 4pm | Sat-Sun 7am - 2pm</div>
+        <div class="ticker-item">PROMO: 10% off all pastries after 3pm today!</div>
+    </div>
+
+    <div class="filter-container">
+        <button class="filter-chip active" onclick="applyMenuFilter('All', this)">All</button>
+        <button class="filter-chip" onclick="applyMenuFilter('Pastry', this)">Pastries</button>
+        <button class="filter-chip" onclick="applyMenuFilter('Drink', this)">Drinks</button>
+        <button class="filter-chip" onclick="applyMenuFilter('Seasonal', this)">Seasonal</button>
+    </div>
+
+    <main id="mainDisplay"></main>
+
+    <footer style="text-align: center; padding: 40px; border-top: 1px solid #dcd5cc; background: #efeae4;">
+        <p style="margin: 0; font-weight: bold; color: #8b7e74; font-size: 0.8rem;">Made by Seth Carthew in Year 9 at Caboolture State High School</p>
+    </footer>
+
+    <script src="database.js"></script>
+    <script>
+        // Wait for page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('menuSearch');
+            const searchDropdown = document.getElementById('searchDropdown');
+            const mainDisplay = document.getElementById('mainDisplay');
+
+            // 1. RENDER FUNCTION (The "Old Style" Grid)
+            window.drawGrid = function(items) {
+                mainDisplay.innerHTML = ""; 
+                if (!items || items.length === 0) {
+                    mainDisplay.innerHTML = "<p style='grid-column: 1/-1; text-align: center; padding: 50px;'>No treats found!</p>";
+                    return;
+                }
+
+                items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'menu-card';
+                    card.innerHTML = `
+                        <img src="${item.image}" style="width: 100%; height: 200px; object-fit: cover;">
+                        <div style="padding: 15px;">
+                            <h3 style="margin: 0; font-size: 1.1rem;">${item.name}</h3>
+                            <p style="margin: 5px 0 0; font-weight: bold; color: #8b7e74;">$${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="vertical-overlay">
+                            <b style="color: #d4a373;">${item.type.toUpperCase()}</b>
+                            <div style="margin-top: 5px;"><i>${item.allergens}</i></div>
+                            <div style="margin-top: 10px; font-weight: bold;">${item.calories} kcal</div>
+                        </div>
+                    `;
+                    mainDisplay.appendChild(card);
+                });
+            };
+
+            // 2. THE BUTTON LOGIC (Fixed)
+            window.applyMenuFilter = function(category, btn) {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+
+                if (category === "All") {
+                    drawGrid(menuItems);
+                } else {
+                    const filtered = menuItems.filter(i => i.type === category);
+                    drawGrid(filtered);
+                }
+            };
+
+            // 3. THE SEARCH LOGIC
+            searchInput.oninput = function() {
+                const term = this.value.toLowerCase().trim();
+                if (term.length > 0) {
+                    this.style.width = "500px"; 
+                    searchDropdown.style.display = "block";
+                    const matches = menuItems.filter(i => i.name.toLowerCase().includes(term));
+                    
+                    searchDropdown.innerHTML = matches.slice(0, 5).map(item => `
+                        <div class="search-result-card">
+                            <div style="display: flex; align-items: center; padding: 12px;">
+                                <img src="${item.image}" style="width: 45px; height: 45px; border-radius: 8px; margin-right: 12px; object-fit: cover;">
+                                <div>
+                                    <div style="font-weight: bold; font-size: 0.85rem;">${item.name}</div>
+                                    <div style="font-size: 0.75rem; color: #8b7e74;">$${item.price.toFixed(2)}</div>
+                                </div>
+                            </div>
+                            <div class="horizontal-overlay">
+                                <b style="color: #d4a373;">${item.type.toUpperCase()}</b>
+                                <div style="font-size: 0.6rem; margin-top: 3px;">${item.allergens}</div>
+                                <div style="font-weight: bold;">${item.calories} kcal</div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    this.style.width = "350px"; 
+                    searchDropdown.style.display = "none";
+                }
+            };
+
+            // Startup
+            if (typeof menuItems !== 'undefined') drawGrid(menuItems);
+        });
+
+        // Ticker logic
+        let currentIdx = 0;
+        setInterval(() => {
+            const tickers = document.querySelectorAll('.ticker-item');
+            if(tickers.length > 0) {
+                tickers[currentIdx].classList.remove('active');
+                currentIdx = (currentIdx + 1) % tickers.length;
+                tickers[currentIdx].classList.add('active');
+            }
+        }, 4000);
+    </script>
+</body>
+</html>
